@@ -69,7 +69,7 @@ jobs:
             comment += '- [ ] Dependencies are actively maintained (last update < 6 months)\n';
             comment += '- [ ] No known security vulnerabilities\n';
             comment += '- [ ] Minimal dependencies added (only what\'s necessary)\n\n';
-            
+
             try {
               const audit = JSON.parse(fs.readFileSync('audit.json', 'utf8'));
               const vulnCount = Object.values(audit.metadata.vulnerabilities).reduce((a, b) => a + b, 0);
@@ -81,7 +81,7 @@ jobs:
             } catch (e) {
               console.log('Could not read audit results');
             }
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

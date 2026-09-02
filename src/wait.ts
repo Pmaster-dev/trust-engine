@@ -5,9 +5,16 @@
  * @returns Resolves with 'done!' after the wait is over.
  */
 export async function wait(milliseconds: number): Promise<string> {
-  return new Promise((resolve) => {
-    if (isNaN(milliseconds)) throw new Error('milliseconds is not a number')
+  if (Number.isNaN(milliseconds)) {
+    throw new Error('milliseconds is not a number')
+  }
 
+  // Fast path: avoid timer handle scheduling and event loop delay when milliseconds is <= 0
+  if (milliseconds <= 0) {
+    return 'done!'
+  }
+
+  return new Promise((resolve) => {
     setTimeout(() => resolve('done!'), milliseconds)
   })
 }
