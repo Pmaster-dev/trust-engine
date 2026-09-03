@@ -22,6 +22,9 @@ describe('main.ts', () => {
     // Set the action's inputs as return values from core.getInput().
     core.getInput.mockImplementation(() => '500')
 
+    // Mock isDebug to return false by default.
+    core.isDebug.mockImplementation(() => false)
+
     // Mock the wait function so that it does not actually wait.
     wait.mockImplementation(() => Promise.resolve('done!'))
   })
@@ -40,6 +43,15 @@ describe('main.ts', () => {
       // Simple regex to match a time string in the format HH:MM:SS.
       expect.stringMatching(/^\d{2}:\d{2}:\d{2}/)
     )
+    expect(core.debug).not.toHaveBeenCalled()
+  })
+
+  it('Logs debug info when runner debug is enabled', async () => {
+    core.isDebug.mockReturnValue(true)
+
+    await run()
+
+    expect(core.debug).toHaveBeenCalledTimes(3)
   })
 
   it('Sets a failed status', async () => {

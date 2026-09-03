@@ -21,4 +21,13 @@ describe('wait.ts', () => {
 
     expect(delta).toBeGreaterThan(450)
   })
+
+  it('Resolves immediately for 0 or negative milliseconds', async () => {
+    const start = new Date()
+    const result = await wait(0)
+    const end = new Date()
+
+    expect(result).toBe('done!')
+    expect(end.getTime() - start.getTime()).toBeLessThan(50)
+  })
 })
