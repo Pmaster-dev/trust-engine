@@ -1,29 +1,31 @@
-import { TrustSignals, TrustSignalName } from "../types"
+import { TrustSignals, TrustSignalName } from '../types'
 
-export function normalizeSignals(signals: TrustSignals): Record<TrustSignalName, number> {
-  const result = {} as Record<TrustSignalName, number>
-
-  const names: TrustSignalName[] = [
-    "identity",
-    "behavior",
-    "reputation",
-    "contribution",
-    "consistency",
-    "accessibility",
-    "security",
-    "governance",
-    "intent",
-  ]
-
-  for (const name of names) {
-    const raw = signals[name]
-    if (raw == null || Number.isNaN(raw)) {
-      result[name] = 0
-      continue
-    }
-    // clamp to [0,1]
-    result[name] = Math.max(0, Math.min(1, raw))
+function clampSignal(raw: number | undefined): number {
+  if (raw == null || Number.isNaN(raw)) {
+    return 0
   }
+  return raw < 0 ? 0 : raw > 1 ? 1 : raw
+}
 
-  return result
+/**
+ * Normalizes trust signals by clamping valid numeric values to [0, 1]
+ * and defaulting missing/invalid inputs to 0.
+ *
+ * Optimization: Direct object literal initialization avoids dynamic property mutations
+ * and temporary array allocations, giving V8 monomorphic shape site ICs.
+ */
+export function normalizeSignals(
+  signals: TrustSignals
+): Record<TrustSignalName, number> {
+  return {
+    identity: clampSignal(signals.identity),
+    behavior: clampSignal(signals.behavior),
+    reputation: clampSignal(signals.reputation),
+    contribution: clampSignal(signals.contribution),
+    consistency: clampSignal(signals.consistency),
+    accessibility: clampSignal(signals.accessibility),
+    security: clampSignal(signals.security),
+    governance: clampSignal(signals.governance),
+    intent: clampSignal(signals.intent)
+  }
 }
