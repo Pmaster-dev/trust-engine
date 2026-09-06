@@ -1,8 +1,8 @@
-import { TrustSignals, TrustScoreResult, TrustSignalName } from "./types"
-import { defaultWeights } from "./weights/default"
-import { normalizeSignals } from "./utils/normalize"
-import { aggregateScore } from "./utils/aggregate"
-import { explainScore } from "./utils/explain"
+import { TrustSignals, TrustScoreResult, TrustSignalName } from './types.js'
+import { defaultWeights } from './weights/default.js'
+import { normalizeSignals } from './utils/normalize.js'
+import { aggregateScore } from './utils/aggregate.js'
+import { explainScore } from './utils/explain.js'
 
 export function computeTrust(
   signals: TrustSignals,
@@ -10,7 +10,7 @@ export function computeTrust(
 ): TrustScoreResult {
   const mergedWeights: Record<TrustSignalName, number> = {
     ...defaultWeights,
-    ...weights,
+    ...weights
   }
 
   const normalized = normalizeSignals(signals)
