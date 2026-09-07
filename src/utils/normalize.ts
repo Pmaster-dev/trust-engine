@@ -1,28 +1,33 @@
-import { TrustSignals, TrustSignalName } from "../types"
+import { TrustSignals, TrustSignalName } from '../types.js'
 
-export function normalizeSignals(signals: TrustSignals): Record<TrustSignalName, number> {
+// Static array of signal names to avoid per-invocation allocation
+const SIGNAL_NAMES: TrustSignalName[] = [
+  'identity',
+  'behavior',
+  'reputation',
+  'contribution',
+  'consistency',
+  'accessibility',
+  'security',
+  'governance',
+  'intent'
+]
+
+export function normalizeSignals(
+  signals: TrustSignals
+): Record<TrustSignalName, number> {
   const result = {} as Record<TrustSignalName, number>
 
-  const names: TrustSignalName[] = [
-    "identity",
-    "behavior",
-    "reputation",
-    "contribution",
-    "consistency",
-    "accessibility",
-    "security",
-    "governance",
-    "intent",
-  ]
-
-  for (const name of names) {
+  // Fast indexed loop avoiding array allocation, function calls, & iterator overhead
+  for (let i = 0; i < SIGNAL_NAMES.length; i++) {
+    const name = SIGNAL_NAMES[i]
     const raw = signals[name]
-    if (raw == null || Number.isNaN(raw)) {
+    if (typeof raw !== 'number' || raw !== raw) {
       result[name] = 0
-      continue
+    } else {
+      // Clamp to [0, 1] without Math.max/min function call overhead
+      result[name] = raw < 0 ? 0 : raw > 1 ? 1 : raw
     }
-    // clamp to [0,1]
-    result[name] = Math.max(0, Math.min(1, raw))
   }
 
   return result
