@@ -4,9 +4,6 @@ import { normalizeSignals } from './utils/normalize.js'
 import { aggregateScore } from './utils/aggregate.js'
 import { explainScore } from './utils/explain.js'
 
-/**
- * Computes the overall trust score, breakdown, and merged weights.
- */
 export function computeTrust(
   signals: TrustSignals,
   weights: Partial<Record<TrustSignalName, number>> = {}

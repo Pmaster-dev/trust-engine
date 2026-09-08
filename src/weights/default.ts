@@ -1,4 +1,4 @@
-import { TrustSignalName } from '../types.js'
+import { TrustSignalName } from '../types'
 
 export const defaultWeights: Record<TrustSignalName, number> = {
   identity: 0.18,

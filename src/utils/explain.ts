@@ -2,7 +2,7 @@ import { TrustSignalName } from '../types.js'
 
 /**
  * Explains the contribution of each trust signal to the overall score.
- * Optimized with key loops instead of Object.values().reduce() and Object.keys() array allocations.
+ * Optimized with direct loop to avoid Object.values().reduce() and Object.keys() array allocations.
  */
 export function explainScore(
   signals: Record<TrustSignalName, number>,
