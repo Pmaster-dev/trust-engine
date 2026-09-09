@@ -1,5 +1,9 @@
-import { TrustSignalName } from "../types"
+import { TrustSignalName } from '../types.js'
 
+/**
+ * Aggregates weighted scores into a final normalized score.
+ * Uses index-based loop over weight keys to eliminate iterator allocation overhead.
+ */
 export function aggregateScore(
   signals: Record<TrustSignalName, number>,
   weights: Record<TrustSignalName, number>
@@ -7,7 +11,9 @@ export function aggregateScore(
   let sum = 0
   let weightSum = 0
 
-  for (const key of Object.keys(weights) as TrustSignalName[]) {
+  const keys = Object.keys(weights) as TrustSignalName[]
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
     const w = weights[key]
     const v = signals[key] ?? 0
     sum += v * w
