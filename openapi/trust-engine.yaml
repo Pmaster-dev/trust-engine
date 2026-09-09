@@ -15,14 +15,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TrustSignals'
+              $ref: "#/components/schemas/TrustSignals"
       responses:
-        '200':
+        "200":
           description: Trust score computed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrustScoreResult'
+                $ref: "#/components/schemas/TrustScoreResult"
 
 components:
   schemas:
