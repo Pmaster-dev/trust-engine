@@ -3,7 +3,7 @@ import { computeTrust } from '../src/engine.js'
 import { aggregateScore } from '../src/utils/aggregate.js'
 import { explainScore } from '../src/utils/explain.js'
 import { normalizeSignals } from '../src/utils/normalize.js'
-import { computeIdentitySignal } from '../src/signals/identity.js'
+import { computeIdentitySignal } from '../src/signals/*.js'
 import { TrustSignalName } from '../src/types.js'
 
 describe('Trust Engine', () => {
