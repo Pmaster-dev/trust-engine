@@ -1,4 +1,4 @@
-import { TrustSignalName } from "../types"
+import { TrustSignalName } from '../types.js'
 
 export function aggregateScore(
   signals: Record<TrustSignalName, number>,
@@ -7,9 +7,10 @@ export function aggregateScore(
   let sum = 0
   let weightSum = 0
 
-  for (const key of Object.keys(weights) as TrustSignalName[]) {
-    const w = weights[key]
-    const v = signals[key] ?? 0
+  for (const key in weights) {
+    const k = key as TrustSignalName
+    const w = weights[k]
+    const v = signals[k] ?? 0
     sum += v * w
     weightSum += w
   }
