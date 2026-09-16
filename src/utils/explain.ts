@@ -1,30 +1,16 @@
-import { TrustSignalName } from '../types.js'
+import { TrustSignalName } from "../types"
 
-/**
- * Calculates the score breakdown per trust signal normalized by the weight sum.
- *
- * Optimization: Uses a single Object.entries() call instead of separate Object.values().reduce()
- * and Object.keys() calls. This eliminates redundant object property reflections, avoids
- * higher-order closure function allocations in .reduce(), and reuses key-value pairs directly.
- * Performance impact: ~13-14% faster score breakdown computation.
- */
 export function explainScore(
   signals: Record<TrustSignalName, number>,
   weights: Record<TrustSignalName, number>
 ): Record<TrustSignalName, number> {
-  const breakdown = {} as Record<TrustSignalName, number>
-  const entries = Object.entries(weights) as [TrustSignalName, number][]
+  const breakdown: Record<TrustSignalName, number> = {} as any
+  const weightSum = Object.values(weights).reduce((a, b) => a + b, 0) || 1
 
-  let weightSum = 0
-  for (let i = 0; i < entries.length; i++) {
-    weightSum += entries[i][1]
-  }
-  const effectiveWeightSum = weightSum || 1
-
-  for (let i = 0; i < entries.length; i++) {
-    const [key, w] = entries[i]
+  for (const key of Object.keys(weights) as TrustSignalName[]) {
+    const w = weights[key]
     const v = signals[key] ?? 0
-    breakdown[key] = (v * w) / effectiveWeightSum
+    breakdown[key] = (v * w) / weightSum
   }
 
   return breakdown
