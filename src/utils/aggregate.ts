@@ -1,4 +1,4 @@
-import { TrustSignalName } from "../types"
+import { TrustSignalName } from '../types'
 
 export function aggregateScore(
   signals: Record<TrustSignalName, number>,
