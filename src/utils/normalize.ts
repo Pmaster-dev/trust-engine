@@ -1,4 +1,4 @@
-import { TrustSignals, TrustSignalName } from '../types'
+import { TrustSignals, TrustSignalName } from '../types.js'
 
 export function normalizeSignals(
   signals: TrustSignals

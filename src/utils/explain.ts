@@ -1,4 +1,4 @@
-import { TrustSignalName } from '../types'
+import { TrustSignalName } from '../types.js'
 
 export function explainScore(
   signals: Record<TrustSignalName, number>,
