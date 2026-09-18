@@ -1,18 +1,20 @@
-import { TrustSignals, TrustSignalName } from "../types"
+import { TrustSignals, TrustSignalName } from '../types'
 
-export function normalizeSignals(signals: TrustSignals): Record<TrustSignalName, number> {
+export function normalizeSignals(
+  signals: TrustSignals
+): Record<TrustSignalName, number> {
   const result = {} as Record<TrustSignalName, number>
 
   const names: TrustSignalName[] = [
-    "identity",
-    "behavior",
-    "reputation",
-    "contribution",
-    "consistency",
-    "accessibility",
-    "security",
-    "governance",
-    "intent",
+    'identity',
+    'behavior',
+    'reputation',
+    'contribution',
+    'consistency',
+    'accessibility',
+    'security',
+    'governance',
+    'intent'
   ]
 
   for (const name of names) {
