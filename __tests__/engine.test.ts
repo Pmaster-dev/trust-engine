@@ -1,9 +1,9 @@
-import { describe, it, expect } from "vitest"
-import { computeTrust } from "../src/engine"
+import { describe, it, expect } from '@jest/globals'
+import { computeTrust } from '../src/engine.js'
 
-describe("Trust Engine", () => {
-  it("computes a valid trust score", () => {
+describe('Trust Engine', () => {
+  it('computes a valid trust score', () => {
     const score = computeTrust({ identity: 0.9 })
-    expect(score).toBeGreaterThan(0)
+    expect(score.score).toBeGreaterThan(0)
   })
 })
