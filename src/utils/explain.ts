@@ -1,16 +1,27 @@
-import { TrustSignalName } from "../types"
+import { TrustSignalName, SIGNAL_NAMES } from '../types.js'
 
+// Fast score breakdown calculation iterating directly over SIGNAL_NAMES without Object.values or Object.keys allocations
 export function explainScore(
   signals: Record<TrustSignalName, number>,
   weights: Record<TrustSignalName, number>
 ): Record<TrustSignalName, number> {
-  const breakdown: Record<TrustSignalName, number> = {} as any
-  const weightSum = Object.values(weights).reduce((a, b) => a + b, 0) || 1
+  const breakdown = {} as Record<TrustSignalName, number>
+  let weightSum = 0
 
-  for (const key of Object.keys(weights) as TrustSignalName[]) {
+  for (let i = 0; i < SIGNAL_NAMES.length; i++) {
+    const w = weights[SIGNAL_NAMES[i]]
+    if (w !== undefined) weightSum += w
+  }
+
+  const denominator = weightSum || 1
+
+  for (let i = 0; i < SIGNAL_NAMES.length; i++) {
+    const key = SIGNAL_NAMES[i]
     const w = weights[key]
-    const v = signals[key] ?? 0
-    breakdown[key] = (v * w) / weightSum
+    if (w !== undefined) {
+      const v = signals[key] ?? 0
+      breakdown[key] = (v * w) / denominator
+    }
   }
 
   return breakdown
