@@ -1,5 +1,9 @@
 // src/signals/identity.ts
-export function computeIdentitySignal(input: { verified: boolean; mfa: boolean; riskScore?: number }): number {
+export function computeIdentitySignal(input: {
+  verified: boolean
+  mfa: boolean
+  riskScore?: number
+}): number {
   let score = 0
   if (input.verified) score += 0.6
   if (input.mfa) score += 0.3
