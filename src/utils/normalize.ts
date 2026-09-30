@@ -1,28 +1,23 @@
-import { TrustSignals, TrustSignalName } from "../types"
+import { TrustSignals, TrustSignalName, SIGNAL_NAMES } from '../types.js'
 
-export function normalizeSignals(signals: TrustSignals): Record<TrustSignalName, number> {
+/**
+ * Normalizes trust signals by clamping valid numbers to [0, 1] and defaulting missing/NaN values to 0.
+ * Performance Optimization: Uses static SIGNAL_NAMES array to avoid array allocations on every call.
+ */
+export function normalizeSignals(
+  signals: TrustSignals
+): Record<TrustSignalName, number> {
   const result = {} as Record<TrustSignalName, number>
 
-  const names: TrustSignalName[] = [
-    "identity",
-    "behavior",
-    "reputation",
-    "contribution",
-    "consistency",
-    "accessibility",
-    "security",
-    "governance",
-    "intent",
-  ]
-
-  for (const name of names) {
+  for (let i = 0; i < SIGNAL_NAMES.length; i++) {
+    const name = SIGNAL_NAMES[i]
     const raw = signals[name]
     if (raw == null || Number.isNaN(raw)) {
       result[name] = 0
-      continue
+    } else {
+      // Clamp to [0, 1]
+      result[name] = raw < 0 ? 0 : raw > 1 ? 1 : raw
     }
-    // clamp to [0,1]
-    result[name] = Math.max(0, Math.min(1, raw))
   }
 
   return result
