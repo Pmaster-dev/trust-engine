@@ -1,21 +1,24 @@
-import { TrustSignals, TrustSignalName } from "../types"
+import { TrustSignals, TrustSignalName } from '../types'
 
-export function normalizeSignals(signals: TrustSignals): Record<TrustSignalName, number> {
+// Hoisted static array of signal names to prevent array allocation on every call
+const SIGNAL_NAMES: readonly TrustSignalName[] = [
+  'identity',
+  'behavior',
+  'reputation',
+  'contribution',
+  'consistency',
+  'accessibility',
+  'security',
+  'governance',
+  'intent'
+]
+
+export function normalizeSignals(
+  signals: TrustSignals
+): Record<TrustSignalName, number> {
   const result = {} as Record<TrustSignalName, number>
 
-  const names: TrustSignalName[] = [
-    "identity",
-    "behavior",
-    "reputation",
-    "contribution",
-    "consistency",
-    "accessibility",
-    "security",
-    "governance",
-    "intent",
-  ]
-
-  for (const name of names) {
+  for (const name of SIGNAL_NAMES) {
     const raw = signals[name]
     if (raw == null || Number.isNaN(raw)) {
       result[name] = 0
