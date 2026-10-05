@@ -10,21 +10,20 @@ const defaultWeights = {
     intent: 0.07
 };
 
-// Hoisted static array of signal names to prevent array allocation on every call
-const SIGNAL_NAMES = [
-    'identity',
-    'behavior',
-    'reputation',
-    'contribution',
-    'consistency',
-    'accessibility',
-    'security',
-    'governance',
-    'intent'
-];
 function normalizeSignals(signals) {
     const result = {};
-    for (const name of SIGNAL_NAMES) {
+    const names = [
+        'identity',
+        'behavior',
+        'reputation',
+        'contribution',
+        'consistency',
+        'accessibility',
+        'security',
+        'governance',
+        'intent'
+    ];
+    for (const name of names) {
         const raw = signals[name];
         if (raw == null || Number.isNaN(raw)) {
             result[name] = 0;
@@ -39,11 +38,8 @@ function normalizeSignals(signals) {
 function aggregateScore(signals, weights) {
     let sum = 0;
     let weightSum = 0;
-    // Use for...in to iterate without allocating key arrays via Object.keys()
-    for (const key in weights) {
+    for (const key of Object.keys(weights)) {
         const w = weights[key];
-        if (w === undefined)
-            continue;
         const v = signals[key] ?? 0;
         sum += v * w;
         weightSum += w;

@@ -7,11 +7,9 @@ export function aggregateScore(
   let sum = 0
   let weightSum = 0
 
-  // Use for...in to iterate without allocating key arrays via Object.keys()
-  for (const key in weights) {
-    const w = weights[key as TrustSignalName]
-    if (w === undefined) continue
-    const v = signals[key as TrustSignalName] ?? 0
+  for (const key of Object.keys(weights) as TrustSignalName[]) {
+    const w = weights[key]
+    const v = signals[key] ?? 0
     sum += v * w
     weightSum += w
   }
